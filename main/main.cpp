@@ -17,6 +17,7 @@ static void task_lv_tick(void* arg);
 static void task_GUI(void* pvParameter);
 static void setupGUI();
 
+static lv_obj_t *screen_cont_1;
 static lv_obj_t* hello_world_label;
 static lv_obj_t* count_label;
 static SemaphoreHandle_t xGuiSemaphore = NULL;
@@ -106,11 +107,30 @@ static void task_GUI(void* pvParameter) {
 }
 
 static void setupGUI() {
-  hello_world_label = lv_label_create(lv_scr_act());
+  //Write codes screen_cont_1
+	screen_cont_1 = lv_obj_create(lv_scr_act());
+	lv_obj_set_pos(screen_cont_1, 0, 0);
+	lv_obj_set_size(screen_cont_1, 135, 240);
+
+  //Write style state: LV_STATE_DEFAULT for style_screen_cont_1_main_main_default
+	static lv_style_t style_screen_cont_1_main_main_default;
+	lv_style_reset(&style_screen_cont_1_main_main_default);
+	lv_style_set_radius(&style_screen_cont_1_main_main_default, 0);
+	lv_style_set_bg_color(&style_screen_cont_1_main_main_default, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_color(&style_screen_cont_1_main_main_default, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_dir(&style_screen_cont_1_main_main_default, LV_GRAD_DIR_VER);
+	lv_style_set_bg_opa(&style_screen_cont_1_main_main_default, 255);
+	lv_style_set_border_color(&style_screen_cont_1_main_main_default, lv_color_make(0xff, 0x00, 0x00));
+	lv_style_set_border_width(&style_screen_cont_1_main_main_default, 1);
+	lv_style_set_border_opa(&style_screen_cont_1_main_main_default, 255);
+	lv_obj_add_style(screen_cont_1, &style_screen_cont_1_main_main_default, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+  hello_world_label = lv_label_create(screen_cont_1);
   lv_label_set_text(hello_world_label, "Hello world!");
+  lv_label_set_long_mode(hello_world_label, LV_LABEL_LONG_WRAP);
   lv_obj_align(hello_world_label, LV_ALIGN_CENTER, 0, 0);
 
-  count_label = lv_label_create(lv_scr_act());
+  count_label = lv_label_create(screen_cont_1);
   lv_obj_align(count_label, LV_ALIGN_BOTTOM_MID, 0, 0);
 }
 
